@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:management_state/provider/done_module_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'done_module_list.dart';
 import 'list_module.dart';
@@ -12,25 +14,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: const ModulePage(),
+    return ChangeNotifierProvider(
+      create: (context) => DoneModuleProvider(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+            primarySwatch: Colors.blue,
+            visualDensity: VisualDensity.adaptivePlatformDensity),
+        home: ModulePage(),
+      ),
     );
   }
 }
 
-class ModulePage extends StatefulWidget {
-  const ModulePage({super.key});
+class ModulePage extends StatelessWidget {
+  ModulePage({super.key});
 
-  @override
-  State<ModulePage> createState() => _ModulePageState();
-}
-
-class _ModulePageState extends State<ModulePage> {
-  final List<String> doneModuleList = [];
+  final List<String> _doneModuleList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +44,13 @@ class _ModulePageState extends State<ModulePage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => DoneModuleList(
-                              doneModuleList: doneModuleList,
+                              doneModuleList: _doneModuleList,
                             )));
               },
               icon: const Icon(Icons.done))
         ],
       ),
-      body: ModuleList(doneModuleList: doneModuleList),
+      body: ModuleList(doneModuleList: _doneModuleList),
     );
   }
 }
